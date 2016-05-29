@@ -1,18 +1,18 @@
 
 function getMessage(a, b) {
-  if (typeof(a) == "boolean") {
-    if (a == true) {
+  if (typeof a == "boolean") {
+    if (a) {
       return "Переданное GIF-изображение анимировано и содержит " + b +" кадров";
     } else {
       return "Переданное GIF-изображение не анимировано";
     }
   }
 
-  if (typeof(a) == "number") {
+  if (typeof a == "number") {
     return "Переданное SVG-изображение содержит " + a + " объектов и " + (b * 4) + " атрибутов";
   }
 
-  if (a instanceof Array) {
+  if (a instanceof Array && !(b instanceof Array) ) {
     var sum = 0;
     aLength = a.length;
 
@@ -25,13 +25,12 @@ function getMessage(a, b) {
 
   if (a instanceof Array && b instanceof Array) {
     var square = 0;
+
     for (var i=0; i < a.length; i++) {
       square += (a[i] * b[i]);
     }
 
-    return square;
-
-    return "Общая площадь артефактов сжатия:" + square + "пикселей";
+    return "Общая площадь артефактов сжатия: " + square + "пикселей";
   }
 
 };
