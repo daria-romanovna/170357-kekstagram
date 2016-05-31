@@ -114,11 +114,119 @@
 
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
+      // this._ctx.strokeRect(
+      //     (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+      //     (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+      //     this._resizeConstraint.side - this._ctx.lineWidth / 2,
+      //     this._resizeConstraint.side - this._ctx.lineWidth / 2);
+
+      // Отрисовка затемненной области вокруг рамки
+
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      this._ctx.beginPath();
+      this._ctx.moveTo((-this._container.width / 2), (-this._container.height / 2));
+      this._ctx.lineTo((this._container.width / 2), (-this._container.height / 2));
+      this._ctx.lineTo((this._container.width / 2), (this._container.height / 2));
+      this._ctx.lineTo((-this._container.width / 2), (this._container.height / 2));
+      this._ctx.lineTo((-this._container.width / 2), (-this._container.height / 2));
+      this._ctx.moveTo(((-this._resizeConstraint.side / 2) - this._ctx.lineWidth), ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth));
+      this._ctx.lineTo((this._resizeConstraint.side / 2), ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth));
+      this._ctx.lineTo((this._resizeConstraint.side / 2), (this._resizeConstraint.side / 2));
+      this._ctx.lineTo(((-this._resizeConstraint.side / 2) - this._ctx.lineWidth), (this._resizeConstraint.side / 2));
+      this._ctx.lineTo(((-this._resizeConstraint.side / 2) - this._ctx.lineWidth), ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth));
+      this._ctx.closePath();
+      this._ctx.fill('evenodd');
+
+      // Вывод размеров изображения в виде текста
+
+
+      this._ctx.font = '14px Arial';
+      this._ctx.fillStyle = '#ffffff';
+      this._ctx.textBaseline = 'hanging';
+
+      var text = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
+      var textWidth = this._ctx.measureText(text).width;
+
+      this._ctx.fillText( text, (-textWidth / 2), ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth - 20 ));
+
+
+      // Отрисовка рамки точками
+
+      this._ctx.fillStyle = '#ffe753';
+
+      var drawCircle = function( x, y, r) {
+        this._ctx.beginPath();
+        this._ctx.arc( x, y, r, 0, 2 * Math.PI);
+        this._ctx.closePath();
+        this._ctx.fill();
+      }.bind(this);
+
+      var fillWithCirclesTopLine = function() {
+
+        var r = 2;
+        var y = ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth) + r;
+        var x = ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth) + r;
+
+        while (x < (this._resizeConstraint.side / 2)) {
+
+          drawCircle( x, y, r);
+
+          x += r + 10;
+        }
+
+      }.bind(this);
+
+      var fillWithCirclesBottomLine = function() {
+
+        var r = 2;
+        var y = (this._resizeConstraint.side / 2) - r;
+        var x = ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth) + r;
+
+        while (x < (this._resizeConstraint.side / 2)) {
+
+          drawCircle( x, y, r);
+
+          x += r + 10;
+        }
+
+      }.bind(this);
+
+
+      var fillWithCirclesLeftLine = function() {
+
+        var r = 2;
+        var y = ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth) + (6 * r);
+        var x = ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth) + r;
+
+        while (y < (this._resizeConstraint.side / 2)) {
+
+          drawCircle( x, y, r);
+
+          y += r + 10;
+        }
+
+      }.bind(this);
+
+      var fillWithCirclesRightLine = function() {
+
+        var r = 2;
+        var y = ((-this._resizeConstraint.side / 2) - this._ctx.lineWidth) + (6 * r);
+        var x = (this._resizeConstraint.side / 2) - r;
+
+        while (y < (this._resizeConstraint.side / 2)) {
+
+          drawCircle( x, y, r);
+
+          y += r + 10;
+        }
+
+      }.bind(this);
+
+      fillWithCirclesTopLine();
+      fillWithCirclesBottomLine();
+      fillWithCirclesLeftLine();
+      fillWithCirclesRightLine();
+
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
