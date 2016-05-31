@@ -30,7 +30,7 @@ function getMessage(a, b) {
       square += (a[i] * b[i]);
     }
 
-    return "Общая площадь артефактов сжатия: " + square + "пикселей";
+    return "Общая площадь артефактов сжатия: " + square + " пикселей";
   }
 
 };
