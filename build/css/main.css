@@ -198,6 +198,12 @@ body {
   background: rgba(255, 231, 83, 0.2) url("../img/icon-arrow.png") center no-repeat;
 }
 
+.upload-form-controls-fwd:disabled {
+  float: right;
+
+  opacity: .1;
+}
+
 .upload-resize canvas {
   position: absolute;
   top: 50%;
@@ -578,4 +584,10 @@ input[type=radio]:checked + .upload-filter-label {
 
 .likes-count-liked:before {
   background-position-x: -18px;
+}
+
+.validity-message {
+  position: absolute;
+  left: 25%;
+  bottom: 80px;
 }

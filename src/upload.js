@@ -186,6 +186,77 @@
     uploadForm.classList.remove('invisible');
   };
 
+  var leftX = document.querySelector('#resize-x');
+  var topY = document.querySelector('#resize-y');
+  var sideSize = document.querySelector('#resize-size');
+
+  leftX.min = 0;
+  topY.min = 0;
+  sideSize.min = 0;
+  leftX.value = leftX.min;
+  topY.value = topY.min;
+  sideSize.value = sideSize.min;
+
+  var setSideMax = function() {
+    var allowedSizeX = currentResizer._image.naturalWidth - leftX.value;
+    var allowedSizeY = currentResizer._image.naturalHeight - topY.value;
+
+    sideSize.max = Math.min(allowedSizeX, allowedSizeY);
+  };
+
+
+  var setCoordinatsMax = function() {
+    leftX.max = currentResizer._image.naturalWidth - sideSize.value;
+    topY.max = currentResizer._image.naturalHeight - sideSize.value;
+
+    if (leftX.max < 0 || topY.max < 0) {
+      document.querySelector('.upload-form-controls-fwd').disabled = true;
+    } else {
+      document.querySelector('.upload-form-controls-fwd').disabled = false;
+    }
+
+  };
+
+
+  sideSize.onchange = function() {
+    setCoordinatsMax();
+    setSideMax();
+    sideSize.checkValidity();
+
+    if (sideSize.value > sideSize.max) {
+      document.querySelector('.upload-form-controls-fwd').disabled = true;
+    } else {
+      document.querySelector('.upload-form-controls-fwd').disabled = false;
+    }
+
+    if (sideSize.validity) {
+      document.querySelector('.validity-message').innerHTML = sideSize.validationMessage;
+    }
+
+  };
+
+  leftX.onchange = function() {
+    setCoordinatsMax();
+    setSideMax();
+    leftX.checkValidity();
+
+    if (leftX.validity) {
+      document.querySelector('.validity-message').innerHTML = leftX.validationMessage;
+    }
+
+  };
+
+  topY.onchange = function() {
+    setCoordinatsMax();
+    setSideMax();
+    topY.checkValidity();
+
+    if (topY.validity) {
+      document.querySelector('.validity-message').innerHTML = topY.validationMessage;
+    }
+
+  };
+
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
    * кропнутое изображение в форму добавления фильтра и показывает ее.
