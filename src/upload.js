@@ -189,6 +189,8 @@
   var leftX = document.querySelector('#resize-x');
   var topY = document.querySelector('#resize-y');
   var sideSize = document.querySelector('#resize-size');
+  var uploadFormSubmitBtn = document.querySelector('.upload-form-controls-fwd');
+  var validityMesagePlace = document.querySelector('.validity-message');
 
   leftX.min = 0;
   topY.min = 0;
@@ -209,52 +211,36 @@
     leftX.max = currentResizer._image.naturalWidth - sideSize.value;
     topY.max = currentResizer._image.naturalHeight - sideSize.value;
 
-    if (leftX.max < 0 || topY.max < 0) {
-      document.querySelector('.upload-form-controls-fwd').disabled = true;
-    } else {
-      document.querySelector('.upload-form-controls-fwd').disabled = false;
-    }
+    uploadFormSubmitBtn.disabled = (leftX.max < 0 || topY.max < 0 || sideSize.max < 0 );
+  };
 
+
+  var setValidationMessage = function(a) {
+    a.checkValidity();
+
+    if (a.validity) {
+      validityMesagePlace.innerHTML = a.validationMessage;
+    }
   };
 
 
   sideSize.onchange = function() {
     setCoordinatsMax();
     setSideMax();
-    sideSize.checkValidity();
-
-    if (sideSize.value > sideSize.max) {
-      document.querySelector('.upload-form-controls-fwd').disabled = true;
-    } else {
-      document.querySelector('.upload-form-controls-fwd').disabled = false;
-    }
-
-    if (sideSize.validity) {
-      document.querySelector('.validity-message').innerHTML = sideSize.validationMessage;
-    }
-
+    setValidationMessage(sideSize);
+    document.querySelector('.upload-form-controls-fwd').disabled = sideSize.value > sideSize.max;
   };
 
   leftX.onchange = function() {
-    setCoordinatsMax();
     setSideMax();
-    leftX.checkValidity();
-
-    if (leftX.validity) {
-      document.querySelector('.validity-message').innerHTML = leftX.validationMessage;
-    }
-
+    setCoordinatsMax();
+    setValidationMessage(leftX);
   };
 
   topY.onchange = function() {
-    setCoordinatsMax();
     setSideMax();
-    topY.checkValidity();
-
-    if (topY.validity) {
-      document.querySelector('.validity-message').innerHTML = topY.validationMessage;
-    }
-
+    setCoordinatsMax();
+    setValidationMessage(topY);
   };
 
   /**
