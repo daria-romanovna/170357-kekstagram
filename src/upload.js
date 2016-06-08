@@ -274,7 +274,7 @@
       filterForm.classList.remove('invisible');
     }
 
-    var selectedFilter = browserCookies.get('selectedFilter');
+    var selectedFilter = browserCookies.get('filter');
     filterImage.className = 'filter-image-preview ' + 'filter-' + selectedFilter;
 
 
@@ -333,15 +333,18 @@
     birthdayDate.setMonth(5, 21);
 
     function dateDiffInDays(a, b) {
+      var utc1 = a.getTime();
+      var utc2 = b.getTime();
 
-      var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-      var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-      return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+      if (a > b) {
+        b.setFullYear(a.getFullYear() + 1);
+        return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+      } else {
+        return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+      }
     }
 
-
-    browserCookies.set('selectedFilter', 'chrome', {
+    browserCookies.set('filter', selectedFilter, {
       expires: dateDiffInDays(currentDate, birthdayDate)
     });
 
