@@ -41,6 +41,8 @@
    */
   var currentResizer;
 
+  var browserCookies = require('browser-cookies');
+
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -271,6 +273,11 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+
+    var selectedFilter = browserCookies.get('selectedFilter');
+    filterImage.className = 'filter-image-preview ' + 'filter-' + selectedFilter;
+
+
   };
 
   /**
@@ -319,6 +326,26 @@
       return item.checked;
     })[0].value;
 
+    var currentDate = new Date();
+    var birthdayDate = new Date();
+    var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    birthdayDate.setMonth(5, 21);
+
+    function dateDiffInDays(a, b) {
+
+      var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+      var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+      return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+    }
+
+
+    browserCookies.set('selectedFilter', 'chrome', {
+      expires: dateDiffInDays(currentDate, birthdayDate)
+    });
+
+
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
@@ -328,3 +355,8 @@
   cleanupResizer();
   updateBackground();
 })();
+
+
+
+
+
