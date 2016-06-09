@@ -227,21 +227,21 @@
     setCoordinatsMax();
     setSideMax();
     setValidationMessage(sideSize);
-    document.querySelector('.upload-form-controls-fwd').disabled = sideSize.value > sideSize.max;
+    document.querySelector('.upload-form-controls-fwd').disabled = parseInt(sideSize.value, 10) > parseInt(sideSize.max, 10);
   };
 
   leftX.oninput = function() {
     setSideMax();
     setCoordinatsMax();
     setValidationMessage(leftX);
-    document.querySelector('.upload-form-controls-fwd').disabled = leftX.value > leftX.max;
+    document.querySelector('.upload-form-controls-fwd').disabled = parseInt(leftX.value, 10) > parseInt(leftX.max, 10);
   };
 
   topY.oninput = function() {
     setSideMax();
     setCoordinatsMax();
     setValidationMessage(topY);
-    document.querySelector('.upload-form-controls-fwd').disabled = topY.value > topY.max;
+    document.querySelector('.upload-form-controls-fwd').disabled = parseInt(topY.value, 10) > parseInt(topY.max, 10);
   };
 
   /**
