@@ -274,7 +274,8 @@
       filterForm.classList.remove('invisible');
     }
 
-    var selectedFilter = browserCookies.get('filter');
+    var DEFAULT_COOKIE_VALUE = 'none';
+    var selectedFilter = browserCookies.get('filter') || DEFAULT_COOKIE_VALUE;
     filterImage.className = 'filter-image-preview ' + 'filter-' + selectedFilter;
 
 
@@ -338,10 +339,9 @@
 
       if (a > b) {
         b.setFullYear(a.getFullYear() + 1);
-        return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-      } else {
-        return Math.floor((utc2 - utc1) / _MS_PER_DAY);
       }
+
+      return Math.floor((utc2 - utc1) / _MS_PER_DAY);
     }
 
     browserCookies.set('filter', selectedFilter, {
