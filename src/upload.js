@@ -223,24 +223,25 @@
     }
   };
 
-
-  sideSize.onchange = function() {
+  sideSize.oninput = function() {
     setCoordinatsMax();
     setSideMax();
     setValidationMessage(sideSize);
     document.querySelector('.upload-form-controls-fwd').disabled = sideSize.value > sideSize.max;
   };
 
-  leftX.onchange = function() {
+  leftX.oninput = function() {
     setSideMax();
     setCoordinatsMax();
     setValidationMessage(leftX);
+    document.querySelector('.upload-form-controls-fwd').disabled = leftX.value > leftX.max;
   };
 
-  topY.onchange = function() {
+  topY.oninput = function() {
     setSideMax();
     setCoordinatsMax();
     setValidationMessage(topY);
+    document.querySelector('.upload-form-controls-fwd').disabled = topY.value > topY.max;
   };
 
   /**
