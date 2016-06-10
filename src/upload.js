@@ -200,48 +200,56 @@
   sideSize.value = sideSize.min;
 
   var setSideMax = function() {
-    var allowedSizeX = currentResizer._image.naturalWidth - leftX.value;
-    var allowedSizeY = currentResizer._image.naturalHeight - topY.value;
+    var allowedSizeX = currentResizer._image.naturalWidth;
+    var allowedSizeY = currentResizer._image.naturalHeight;
 
     sideSize.max = Math.min(allowedSizeX, allowedSizeY);
   };
 
+  var checkAllowableWidthHeight = function() {
 
-  var setCoordinatsMax = function() {
-    leftX.max = currentResizer._image.naturalWidth - sideSize.value;
-    topY.max = currentResizer._image.naturalHeight - sideSize.value;
+    var widthCheck = parseInt(sideSize.value, 10) + parseInt(leftX.value, 10) > currentResizer._image.naturalWidth;
+    var heightCheck = parseInt(sideSize.value, 10) + parseInt(topY.value, 10) > currentResizer._image.naturalHeight;
 
-    uploadFormSubmitBtn.disabled = (leftX.max < 0 || topY.max < 0 || sideSize.max < 0 );
+    if (widthCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения';
+    } else {
+      validityMesagePlace.innerHTML = '';
+    }
+    uploadFormSubmitBtn.disabled = widthCheck;
+
+    if (heightCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения';
+    } else {
+      validityMesagePlace.innerHTML = '';
+    }
+    uploadFormSubmitBtn.disabled = heightCheck;
+
   };
 
+  var setValidationMessage = function(input) {
+    input.checkValidity();
 
-  var setValidationMessage = function(a) {
-    a.checkValidity();
-
-    if (a.validity) {
-      validityMesagePlace.innerHTML = a.validationMessage;
+    if (!input.validity.valid) {
+      validityMesagePlace.innerHTML = input.validationMessage;
     }
+
   };
 
   sideSize.oninput = function() {
-    setCoordinatsMax();
     setSideMax();
+    checkAllowableWidthHeight();
     setValidationMessage(sideSize);
-    document.querySelector('.upload-form-controls-fwd').disabled = parseInt(sideSize.value, 10) > parseInt(sideSize.max, 10);
   };
 
   leftX.oninput = function() {
-    setSideMax();
-    setCoordinatsMax();
+    checkAllowableWidthHeight();
     setValidationMessage(leftX);
-    document.querySelector('.upload-form-controls-fwd').disabled = parseInt(leftX.value, 10) > parseInt(leftX.max, 10);
   };
 
   topY.oninput = function() {
-    setSideMax();
-    setCoordinatsMax();
+    checkAllowableWidthHeight();
     setValidationMessage(topY);
-    document.querySelector('.upload-form-controls-fwd').disabled = parseInt(topY.value, 10) > parseInt(topY.max, 10);
   };
 
   /**
