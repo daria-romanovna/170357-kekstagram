@@ -334,14 +334,11 @@
     birthdayDate.setMonth(5, 21);
 
     function dateDiffInDays(a, b) {
-      var utc1 = a.getTime();
-      var utc2 = b.getTime();
-
-      if (a > b) {
-        b.setFullYear(a.getFullYear() + 1);
+      if (a < b) {
+        b.setFullYear(a.getFullYear() - 1);
       }
 
-      return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+      return Math.floor((a.getTime() - b.getTime()) / _MS_PER_DAY);
     }
 
     browserCookies.set('filter', selectedFilter, {
