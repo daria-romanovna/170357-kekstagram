@@ -208,22 +208,20 @@
 
   var checkAllowableWidthHeight = function() {
 
-    var widthCheck = parseInt(sideSize.value, 10) + parseInt(leftX.value, 10) > currentResizer._image.naturalWidth;
-    var heightCheck = parseInt(sideSize.value, 10) + parseInt(topY.value, 10) > currentResizer._image.naturalHeight;
+    var sideSizeValue = parseInt(sideSize.value, 10) || 0;
+    var widthCheck = sideSizeValue + parseInt(leftX.value, 10) > currentResizer._image.naturalWidth;
+    var heightCheck = sideSizeValue + parseInt(topY.value, 10) > currentResizer._image.naturalHeight;
+    var widthOrHeightCheck = widthCheck || heightCheck;
+    uploadFormSubmitBtn.disabled = widthOrHeightCheck;
 
     if (widthCheck) {
-      validityMesagePlace.innerHTML = 'Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения';
+      validityMesagePlace.innerHTML = 'Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения. ';
+    } else if (heightCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения. ';
     } else {
       validityMesagePlace.innerHTML = '';
     }
-    uploadFormSubmitBtn.disabled = widthCheck;
 
-    if (heightCheck) {
-      validityMesagePlace.innerHTML = 'Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения';
-    } else {
-      validityMesagePlace.innerHTML = '';
-    }
-    uploadFormSubmitBtn.disabled = heightCheck;
 
   };
 
@@ -231,7 +229,7 @@
     input.checkValidity();
 
     if (!input.validity.valid) {
-      validityMesagePlace.innerHTML = input.validationMessage;
+      validityMesagePlace.innerHTML += input.validationMessage;
     }
 
   };
