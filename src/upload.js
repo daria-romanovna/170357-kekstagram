@@ -186,6 +186,70 @@
     uploadForm.classList.remove('invisible');
   };
 
+  var leftX = document.querySelector('#resize-x');
+  var topY = document.querySelector('#resize-y');
+  var sideSize = document.querySelector('#resize-size');
+  var uploadFormSubmitBtn = document.querySelector('.upload-form-controls-fwd');
+  var validityMesagePlace = document.querySelector('.validity-message');
+
+  leftX.min = 0;
+  topY.min = 0;
+  sideSize.min = 0;
+  leftX.value = leftX.min;
+  topY.value = topY.min;
+  sideSize.value = sideSize.min;
+
+  var setSideMax = function() {
+    var allowedSizeX = currentResizer._image.naturalWidth;
+    var allowedSizeY = currentResizer._image.naturalHeight;
+
+    sideSize.max = Math.min(allowedSizeX, allowedSizeY);
+  };
+
+  var checkAllowableWidthHeight = function() {
+
+    var sideSizeValue = parseInt(sideSize.value, 10) || 0;
+    var widthCheck = sideSizeValue + parseInt(leftX.value, 10) > currentResizer._image.naturalWidth;
+    var heightCheck = sideSizeValue + parseInt(topY.value, 10) > currentResizer._image.naturalHeight;
+    var widthOrHeightCheck = widthCheck || heightCheck;
+    uploadFormSubmitBtn.disabled = widthOrHeightCheck;
+
+    if (widthCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения. ';
+    } else if (heightCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения. ';
+    } else {
+      validityMesagePlace.innerHTML = '';
+    }
+
+
+  };
+
+  var setValidationMessage = function(input) {
+    input.checkValidity();
+
+    if (!input.validity.valid) {
+      validityMesagePlace.innerHTML += input.validationMessage;
+    }
+
+  };
+
+  sideSize.oninput = function() {
+    setSideMax();
+    checkAllowableWidthHeight();
+    setValidationMessage(sideSize);
+  };
+
+  leftX.oninput = function() {
+    checkAllowableWidthHeight();
+    setValidationMessage(leftX);
+  };
+
+  topY.oninput = function() {
+    checkAllowableWidthHeight();
+    setValidationMessage(topY);
+  };
+
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
    * кропнутое изображение в форму добавления фильтра и показывает ее.
