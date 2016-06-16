@@ -191,6 +191,8 @@
   var leftX = document.querySelector('#resize-x');
   var topY = document.querySelector('#resize-y');
   var sideSize = document.querySelector('#resize-size');
+  var uploadFormSubmitBtn = document.querySelector('.upload-form-controls-fwd');
+  var validityMesagePlace = document.querySelector('.validity-message');
 
   leftX.min = 0;
   topY.min = 0;
@@ -200,63 +202,54 @@
   sideSize.value = sideSize.min;
 
   var setSideMax = function() {
-    var allowedSizeX = currentResizer._image.naturalWidth - leftX.value;
-    var allowedSizeY = currentResizer._image.naturalHeight - topY.value;
+    var allowedSizeX = currentResizer._image.naturalWidth;
+    var allowedSizeY = currentResizer._image.naturalHeight;
 
     sideSize.max = Math.min(allowedSizeX, allowedSizeY);
   };
 
+  var checkAllowableWidthHeight = function() {
 
-  var setCoordinatsMax = function() {
-    leftX.max = currentResizer._image.naturalWidth - sideSize.value;
-    topY.max = currentResizer._image.naturalHeight - sideSize.value;
+    var sideSizeValue = parseInt(sideSize.value, 10) || 0;
+    var widthCheck = sideSizeValue + parseInt(leftX.value, 10) > currentResizer._image.naturalWidth;
+    var heightCheck = sideSizeValue + parseInt(topY.value, 10) > currentResizer._image.naturalHeight;
+    var widthOrHeightCheck = widthCheck || heightCheck;
+    uploadFormSubmitBtn.disabled = widthOrHeightCheck;
 
-    if (leftX.max < 0 || topY.max < 0) {
-      document.querySelector('.upload-form-controls-fwd').disabled = true;
+    if (widthCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения. ';
+    } else if (heightCheck) {
+      validityMesagePlace.innerHTML = 'Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения. ';
     } else {
-      document.querySelector('.upload-form-controls-fwd').disabled = false;
+      validityMesagePlace.innerHTML = '';
+    }
+
+
+  };
+
+  var setValidationMessage = function(input) {
+    input.checkValidity();
+
+    if (!input.validity.valid) {
+      validityMesagePlace.innerHTML += input.validationMessage;
     }
 
   };
 
-
-  sideSize.onchange = function() {
-    setCoordinatsMax();
+  sideSize.oninput = function() {
     setSideMax();
-    sideSize.checkValidity();
-
-    if (sideSize.value > sideSize.max) {
-      document.querySelector('.upload-form-controls-fwd').disabled = true;
-    } else {
-      document.querySelector('.upload-form-controls-fwd').disabled = false;
-    }
-
-    if (sideSize.validity) {
-      document.querySelector('.validity-message').innerHTML = sideSize.validationMessage;
-    }
-
+    checkAllowableWidthHeight();
+    setValidationMessage(sideSize);
   };
 
-  leftX.onchange = function() {
-    setCoordinatsMax();
-    setSideMax();
-    leftX.checkValidity();
-
-    if (leftX.validity) {
-      document.querySelector('.validity-message').innerHTML = leftX.validationMessage;
-    }
-
+  leftX.oninput = function() {
+    checkAllowableWidthHeight();
+    setValidationMessage(leftX);
   };
 
-  topY.onchange = function() {
-    setCoordinatsMax();
-    setSideMax();
-    topY.checkValidity();
-
-    if (topY.validity) {
-      document.querySelector('.validity-message').innerHTML = topY.validationMessage;
-    }
-
+  topY.oninput = function() {
+    checkAllowableWidthHeight();
+    setValidationMessage(topY);
   };
 
   /**
