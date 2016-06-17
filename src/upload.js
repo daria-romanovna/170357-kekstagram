@@ -224,7 +224,6 @@
       validityMesagePlace.innerHTML = '';
     }
 
-
   };
 
   var setValidationMessage = function(input) {
@@ -270,7 +269,7 @@
     var DEFAULT_COOKIE_VALUE = 'none';
     var selectedFilter = browserCookies.get('filter') || DEFAULT_COOKIE_VALUE;
     filterImage.className = 'filter-image-preview ' + 'filter-' + selectedFilter;
-
+    document.querySelector('#upload-filter-' + selectedFilter).checked = true;
 
   };
 
