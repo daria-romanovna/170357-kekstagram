@@ -41,6 +41,8 @@
    */
   var currentResizer;
 
+  var browserCookies = require('browser-cookies');
+
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -222,7 +224,6 @@
       validityMesagePlace.innerHTML = '';
     }
 
-
   };
 
   var setValidationMessage = function(input) {
@@ -264,6 +265,12 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+
+    var DEFAULT_COOKIE_VALUE = 'none';
+    var selectedFilter = browserCookies.get('filter') || DEFAULT_COOKIE_VALUE;
+    filterImage.className = 'filter-image-preview ' + 'filter-' + selectedFilter;
+    document.querySelector('#upload-filter-' + selectedFilter).checked = true;
+
   };
 
   /**
@@ -312,6 +319,25 @@
       return item.checked;
     })[0].value;
 
+    var currentDate = new Date();
+    var birthdayDate = new Date();
+    var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    birthdayDate.setMonth(5, 21);
+
+    function dateDiffInDays(a, b) {
+      if (a < b) {
+        b.setFullYear(a.getFullYear() - 1);
+      }
+
+      return Math.floor((a.getTime() - b.getTime()) / _MS_PER_DAY);
+    }
+
+    browserCookies.set('filter', selectedFilter, {
+      expires: dateDiffInDays(currentDate, birthdayDate)
+    });
+
+
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
@@ -321,3 +347,8 @@
   cleanupResizer();
   updateBackground();
 })();
+
+
+
+
+
