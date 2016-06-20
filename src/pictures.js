@@ -6,7 +6,7 @@ var templateElement = document.querySelector('template');
 var elementToClone;
 
 if ('content' in templateElement) {
-  var elementToClone = templateElement.content.querySelector('.picture');
+  elementToClone = templateElement.content.querySelector('.picture');
 } else {
   elementToClone = templateElement.querySelector('.picture');
 }
@@ -34,9 +34,9 @@ var getPicturesElement = function(data, container) {
   var pictureImage = new Image();
   pictureImage.onload = function(evt) {
     clearTimeout(pictureLoadTimeout);
-    element.qetElementsbyTagName('img').src = evt.target.src;
-    element.qetElementsbyTagName('img').width = '182';
-    element.qetElementsbyTagName('img').height = '182';
+    element.querySelector('.picture-image').src = evt.target.src;
+    element.querySelector('.picture-image').width = '182';
+    element.querySelector('.picture-image').height = '182';
   };
 
   pictureImage.onerror = function() {
@@ -48,13 +48,13 @@ var getPicturesElement = function(data, container) {
   var pictureLoadTimeout = setTimeout(function() {
     pictureImage.src = '';
     element.classList.add('picture-load-failure');
+    hidefiltersBlock();
   }, IMAGE_LOAD_TIMEOUT);
 
-  return element;
 };
 
 hidefiltersBlock();
-pictures.forEach(function(picture) {
+window.pictures.forEach(function(picture) {
   getPicturesElement(picture, picturesContainer);
   showfiltersBlock();
 });

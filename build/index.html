@@ -82,7 +82,7 @@
 
 <template id="picture-template">
   <a href="" class="picture">
-    <img src="" width="182" height="182">
+    <img class="picture-image" src="" width="182" height="182">
     <span class="picture-stats">
       <span class="picture-stat picture-comments"></span>
       <span class="picture-stat picture-likes"></span>
@@ -90,7 +90,6 @@
   </a>
 </template>
 
-<script src="js/main.js" type="text/javascript"></script>
 <script type="text/javascript">
   var pictures =[];
   var __picturesLoadCallback = function(data) {
@@ -98,6 +97,7 @@
   };
 </script>
 <script src="//up.htmlacademy.ru/assets/js_intensive/jsonp/pictures.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
 
 </body>
 </html>
