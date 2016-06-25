@@ -63,7 +63,7 @@ var getPicturesElement = function(data, container) {
 
 hidefiltersBlock();
 
-var PICTURES_LOAD_URL = '//o0.github.io/assets/json/pictures.json'
+var PICTURES_LOAD_URL = '//o0.github.io/assets/json/pictures.json';
 
 var getPictures = function(callback) {
   picturesContainer.classList.add('pictures-loading');
@@ -76,14 +76,14 @@ var getPictures = function(callback) {
     callback(loadedData);
   };
 
-  xhr.onerror = function(evt) {
+  xhr.onerror = function() {
     picturesContainer.classList.remove('pictures-loading');
     picturesContainer.classList.add('pictures-failure');
   };
 
   xhr.timeout = 5000;
 
-  xhr.ontimeout = function(evt) {
+  xhr.ontimeout = function() {
     picturesContainer.classList.remove('pictures-loading');
     picturesContainer.classList.add('pictures-failure');
   };
@@ -97,7 +97,7 @@ var renderPictures = function(picturesToRender) {
   picturesToRender.forEach(function(picture) {
     getPicturesElement(picture, picturesContainer);
   });
-}
+};
 
 var getFilteredPictures = function(filter) {
   var picturesToFilter = pictures.slice(0);
@@ -114,7 +114,7 @@ var getFilteredPictures = function(filter) {
       var daysAgo = 4;
       var fourDaysAgo = new Date(currentDate.getTime() - (daysAgo * 24 * 60 * 60 * 1000));
 
-      var newPictures = picturesToFilter.filter(function(picture, i, arr) {
+      var newPictures = picturesToFilter.filter(function(picture) {
         var pictureDate = new Date(picture.date);
         var shouldRemainInArray = pictureDate > fourDaysAgo;
         return shouldRemainInArray;
@@ -129,7 +129,6 @@ var getFilteredPictures = function(filter) {
       }
 
       return newPictures;
-      break;
   }
 
   return picturesToFilter;
@@ -143,7 +142,7 @@ var setFilterEnabled = function(filter) {
 var setFiltrationEnabled = function() {
   var filters = filtersBlock.querySelectorAll('.filters-radio');
   for (var i = 0; i < filters.length; i++) {
-    filters[i].onclick = function(evt) {
+    filters[i].onclick = function() {
       picturesContainer.classList.remove('pictures-null');
       setFilterEnabled(this.id);
     };
