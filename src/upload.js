@@ -240,16 +240,22 @@
     setSideMax();
     checkAllowableWidthHeight();
     setValidationMessage(sideSize);
+    var sideDiff = sideSize.value - currentResizer.getConstraint().side;
+    currentResizer.moveConstraint(0, 0, sideDiff);
   });
 
   leftX.addEventListener('input', function() {
     checkAllowableWidthHeight();
     setValidationMessage(leftX);
+    var xDiff = leftX.value - currentResizer.getConstraint().x;
+    currentResizer.moveConstraint(xDiff, 0, 0);
   });
 
   topY.addEventListener('input', function() {
     checkAllowableWidthHeight();
     setValidationMessage(topY);
+    var yDiff = topY.value - currentResizer.getConstraint().y;
+    currentResizer.moveConstraint(0, yDiff, 0);
   });
 
   /**
@@ -347,9 +353,10 @@
 
   cleanupResizer();
   updateBackground();
+
+  window.addEventListener('resizerchange', function() {
+    leftX.value = currentResizer.getConstraint().x;
+    topY.value = currentResizer.getConstraint().y;
+    sideSize.value = currentResizer.getConstraint().side;
+  });
 })();
-
-
-
-
-

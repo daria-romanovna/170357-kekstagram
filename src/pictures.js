@@ -172,17 +172,13 @@ var setScrollEnabled = function() {
 
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
-      console.log('123');
       if (isBottomReached() &&
           isNextPageAvailable(pictures, pageNumber)) {
         pageNumber++;
         renderPictures(filteredPictures, pageNumber);
       }
-
       lastCall = Date.now();
-
     }
-
   });
 };
 
