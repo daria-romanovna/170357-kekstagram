@@ -156,8 +156,9 @@ var setFiltrationEnabled = function() {
 };
 
 var isBottomReached = function() {
+  var GAP = 100;
   var picturesPosition = picturesContainer.getBoundingClientRect();
-  return picturesPosition.height - window.pageYOffset - 700 <= 0;
+  return picturesPosition.height - window.pageYOffset - window.innerHeight <= GAP;
 };
 
 var isNextPageAvailable = function(picturestoRender, page) {
