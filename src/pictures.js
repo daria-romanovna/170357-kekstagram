@@ -33,6 +33,13 @@ var setFilterEnabled = function(filter) {
   variables.filteredPictures = filterFunction(filter);
   pageNumber = 0;
   renderPictures(variables.filteredPictures, pageNumber, true);
+
+  if (utilities.isPageBottomReached(variables.picturesContainer) &&
+  utilities.isNextPageAvailable(variables.pictures, pageNumber, PAGE_SIZE)) {
+    pageNumber++;
+    renderPictures(variables.filteredPictures, pageNumber);
+  }
+
 };
 
 var setFiltrationEnabled = function() {
