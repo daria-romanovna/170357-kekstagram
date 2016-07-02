@@ -144,6 +144,9 @@ var setFilterEnabled = function(filter) {
   filteredPictures = getFilteredPictures(filter);
   pageNumber = 0;
   renderPictures(filteredPictures, pageNumber, true);
+  console.log(isPageBottomReached());
+  console.log(window.innerHeight);
+  console.log(picturesContainer.getBoundingClientRect().bottom);
 
   if (isPageBottomReached() &&
     isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
@@ -171,7 +174,7 @@ var isBottomReached = function() {
 var isPageBottomReached = function() {
   var GAP = 50;
   var picturesPosition = picturesContainer.getBoundingClientRect();
-  return window.innerHeight - picturesPosition.bottom <= GAP;
+  return window.innerHeight - picturesPosition.bottom >= GAP;
 };
 
 var isNextPageAvailable = function(picturestoRender, page, pageSize) {
