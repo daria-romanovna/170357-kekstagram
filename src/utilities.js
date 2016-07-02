@@ -6,6 +6,12 @@ var isBottomReached = function(container) {
   return currentPosition.height - window.pageYOffset - window.innerHeight <= GAP;
 };
 
+var isPageBottomReached = function(container) {
+  var GAP = 50;
+  var currentPosition = container.getBoundingClientRect();
+  return window.innerHeight - currentPosition.bottom <= GAP;
+};
+
 var isNextPageAvailable = function(picturestoRender, page, pageSize) {
   return page < Math.floor(picturestoRender.length / pageSize);
 };
@@ -24,6 +30,7 @@ var showBlock = function(block) {
 
 module.exports = {
   isBottomReached: isBottomReached,
+  isPageBottomReached: isPageBottomReached,
   isNextPageAvailable: isNextPageAvailable,
   hideBlock: hideBlock,
   showBlock: showBlock
