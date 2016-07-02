@@ -20,12 +20,14 @@ var hideBlock = function(block) {
   if (!block.classList.contains('hidden')) {
     block.classList.add('hidden');
   }
+
 };
 
 var showBlock = function(block) {
   if (block.classList.contains('hidden')) {
     block.classList.remove('hidden');
   }
+
 };
 
 module.exports = {
