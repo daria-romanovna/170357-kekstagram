@@ -193,11 +193,8 @@ var setScrollEnabled = function() {
         pageNumber++;
         renderPictures(filteredPictures, pageNumber);
       }
-
       lastCall = Date.now();
-
     }
-
   });
 };
 
