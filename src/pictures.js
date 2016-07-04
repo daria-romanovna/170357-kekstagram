@@ -144,6 +144,16 @@ var setFilterEnabled = function(filter) {
   filteredPictures = getFilteredPictures(filter);
   pageNumber = 0;
   renderPictures(filteredPictures, pageNumber, true);
+  console.log(isPageBottomReached());
+  console.log(window.innerHeight);
+  console.log(picturesContainer.getBoundingClientRect().bottom);
+
+  if (isPageBottomReached() &&
+    isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
+    pageNumber++;
+    renderPictures(filteredPictures, pageNumber);
+  }
+
 };
 
 var setFiltrationEnabled = function() {
@@ -161,8 +171,14 @@ var isBottomReached = function() {
   return picturesPosition.height - window.pageYOffset - window.innerHeight <= GAP;
 };
 
-var isNextPageAvailable = function(picturestoRender, page) {
-  return page < Math.floor(picturestoRender.length / PAGE_SIZE);
+var isPageBottomReached = function() {
+  var GAP = 50;
+  var picturesPosition = picturesContainer.getBoundingClientRect();
+  return window.innerHeight - picturesPosition.bottom >= GAP;
+};
+
+var isNextPageAvailable = function(picturestoRender, page, pageSize) {
+  return page < Math.floor(picturestoRender.length / pageSize);
 };
 
 var THROTTLE_DELAY = 100;
@@ -173,7 +189,7 @@ var setScrollEnabled = function() {
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
       if (isBottomReached() &&
-          isNextPageAvailable(pictures, pageNumber)) {
+          isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
         pageNumber++;
         renderPictures(filteredPictures, pageNumber);
       }
