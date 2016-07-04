@@ -5,14 +5,17 @@ var picturesContainer = document.querySelector('.pictures');
 var templateElement = document.querySelector('template');
 var elementToClone;
 var pictures = [];
+var PAGE_SIZE = 12;
+var pageNumber = 0;
+var filteredPictures = [];
+var PICTURES_LOAD_URL = 'https://o0.github.io/assets/json/pictures.json';
+var IMAGE_LOAD_TIMEOUT = 10000;
 
 if ('content' in templateElement) {
   elementToClone = templateElement.content.querySelector('.picture');
 } else {
   elementToClone = templateElement.querySelector('.picture');
 }
-
-var IMAGE_LOAD_TIMEOUT = 10000;
 
 var Filter = {
   'ALL': 'filter-popular',
@@ -63,8 +66,6 @@ var getPicturesElement = function(data, container) {
 
 hidefiltersBlock();
 
-var PICTURES_LOAD_URL = '//o0.github.io/assets/json/pictures.json';
-
 var getPictures = function(callback) {
   picturesContainer.classList.add('pictures-loading');
 
@@ -92,9 +93,15 @@ var getPictures = function(callback) {
   xhr.send();
 };
 
-var renderPictures = function(picturesToRender) {
-  picturesContainer.innerHTML = '';
-  picturesToRender.forEach(function(picture) {
+var renderPictures = function( picturestoRender, page, replace) {
+  if (replace) {
+    picturesContainer.innerHTML = '';
+  }
+
+  var from = page * PAGE_SIZE;
+  var to = from + PAGE_SIZE;
+
+  picturestoRender.slice(from, to).forEach(function(picture) {
     getPicturesElement(picture, picturesContainer);
   });
 };
@@ -111,8 +118,7 @@ var getFilteredPictures = function(filter) {
 
     case Filter.NEW:
       var currentDate = new Date();
-      var daysAgo = 4;
-      var fourDaysAgo = new Date(currentDate.getTime() - (daysAgo * 24 * 60 * 60 * 1000));
+      var fourDaysAgo = currentDate.setDate(currentDate.getDate() - 4);
 
       var newPictures = picturesToFilter.filter(function(picture) {
         var pictureDate = new Date(picture.date);
@@ -135,18 +141,64 @@ var getFilteredPictures = function(filter) {
 };
 
 var setFilterEnabled = function(filter) {
-  var filteredPictures = getFilteredPictures(filter);
-  renderPictures(filteredPictures);
+  filteredPictures = getFilteredPictures(filter);
+  pageNumber = 0;
+  renderPictures(filteredPictures, pageNumber, true);
+  console.log(isPageBottomReached());
+  console.log(window.innerHeight);
+  console.log(picturesContainer.getBoundingClientRect().bottom);
+
+  if (isPageBottomReached() &&
+    isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
+    pageNumber++;
+    renderPictures(filteredPictures, pageNumber);
+  }
+
 };
 
 var setFiltrationEnabled = function() {
-  var filters = filtersBlock.querySelectorAll('.filters-radio');
-  for (var i = 0; i < filters.length; i++) {
-    filters[i].onclick = function() {
+  filtersBlock.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('filters-radio')) {
       picturesContainer.classList.remove('pictures-null');
-      setFilterEnabled(this.id);
-    };
-  }
+      setFilterEnabled(evt.target.id);
+    }
+  });
+};
+
+var isBottomReached = function() {
+  var GAP = 100;
+  var picturesPosition = picturesContainer.getBoundingClientRect();
+  return picturesPosition.height - window.pageYOffset - window.innerHeight <= GAP;
+};
+
+var isPageBottomReached = function() {
+  var GAP = 50;
+  var picturesPosition = picturesContainer.getBoundingClientRect();
+  return window.innerHeight - picturesPosition.bottom >= GAP;
+};
+
+var isNextPageAvailable = function(picturestoRender, page, pageSize) {
+  return page < Math.floor(picturestoRender.length / pageSize);
+};
+
+var THROTTLE_DELAY = 100;
+
+var setScrollEnabled = function() {
+  var lastCall = Date.now();
+
+  window.addEventListener('scroll', function() {
+    if (Date.now() - lastCall >= THROTTLE_DELAY) {
+      if (isBottomReached() &&
+          isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
+        pageNumber++;
+        renderPictures(filteredPictures, pageNumber);
+      }
+
+      lastCall = Date.now();
+
+    }
+
+  });
 };
 
 getPictures(function(loadedPictures) {
@@ -154,6 +206,7 @@ getPictures(function(loadedPictures) {
   showfiltersBlock();
   setFilterEnabled(DEFAULT_FILTER);
   setFiltrationEnabled();
+  setScrollEnabled();
 });
 
 
