@@ -3,10 +3,8 @@
 var variables = require('./variables');
 var utilities = require('./utilities');
 var getPictures = require('./pictures/getPictures');
-var getPicturesElement = require('./pictures/getPicturesElement');
 var filterFunction = require('./filter/filterFunction');
 var filterType = require('./filter/filterType');
-var gallery = require('./gallery');
 var Photo = require('./pictures/photo');
 var DEFAULT_FILTER = filterType.ALL;
 var PAGE_SIZE = 12;
@@ -33,15 +31,12 @@ var clearPage = function(reset) {
     variables.renderedPictures.forEach(function(picture) {
       picture.remove();
     });
-
     variables.renderedPictures = [];
   }
-
-}
+};
 
 var setFilterEnabled = function(filter) {
   variables.filteredPictures = filterFunction(filter);
-  gallery.getGalleryPictures(variables.filteredPictures);
   pageNumber = 0;
   renderPictures(variables.filteredPictures, pageNumber);
 
@@ -50,7 +45,6 @@ var setFilterEnabled = function(filter) {
     pageNumber++;
     renderPictures(variables.filteredPictures, pageNumber);
   }
-
 };
 
 var setFiltrationEnabled = function() {

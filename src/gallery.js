@@ -1,64 +1,60 @@
 'use strict';
 
-var galleryContainer = document.querySelector('.gallery-overlay');
-var galleryPictures = [];
-var galleryClose = document.querySelector('.gallery-overlay-close');
-var galleryImage = document.querySelector('.gallery-overlay-image');
+var Gallery = function(data, container) {
+  this.data = data;
+  this.showGallery = function(index) {
+    var galleryImage = container.querySelector('.gallery-overlay-image');
+    container.classList.remove('invisible');
+    var picturetoShow = this.data[index].data;
+    this.showPicture(picturetoShow);
 
-var getGalleryPictures = function(picturestoShow) {
-  galleryPictures = picturestoShow;
-};
+    var _onPhotoClick = function() {
+      picturetoShow = this.data[index++].data;
+      this.showPicture(picturetoShow);
+    }.bind(this);
 
-var showGallery = function(index) {
-  galleryContainer.classList.remove('invisible');
-  var picturetoShow = galleryPictures[index];
-  showPicture(picturetoShow);
+    galleryImage.addEventListener('click', _onPhotoClick);
+    this.hideGalleryonEvent();
+  };
 
-  galleryImage.addEventListener('click', function() {
-    picturetoShow = galleryPictures[index++];
-    showPicture(picturetoShow);
-  });
+  this.showPicture = function(picturetoShow) {
+    container.querySelector('.gallery-overlay-image').src = picturetoShow.url;
+    container.querySelector('.comments-count').textContent = picturetoShow.comments;
+    container.querySelector('.likes-count').textContent = picturetoShow.likes;
+  };
 
-  window.addEventListener('keydown', function(evt) {
-    if (evt.keyCode === 27) {
-      hideGallery();
-    }
-  });
+  this._hideGallery = function() {
+    container.classList.add('invisible');
+  };
 
-  hideGalleryonEvent();
-
-};
-
-var showPicture = function(picturetoShow) {
-  galleryContainer.querySelector('.gallery-overlay-image').src = picturetoShow.url;
-  galleryContainer.querySelector('.comments-count').textContent = picturetoShow.comments;
-  galleryContainer.querySelector('.likes-count').textContent = picturetoShow.likes;
-};
-
-var hideGallery = function() {
-  galleryContainer.classList.add('invisible');
-};
-
-var hideGalleryonEvent = function() {
-
-  var hideonOverlayClick = function(evt) {
+  this._hideonOverlayClick = function(evt) {
     if (evt.target.classList.contains('gallery-overlay')) {
-      hideGallery();
+      this._hideGallery();
     }
   };
 
-  galleryClose.addEventListener('click', hideGallery);
+  this._onDocumentKeyDown = function(evt) {
+    if (evt.keyCode === 27) {
+      this._hideGallery();
+    }
+  };
 
-  galleryContainer.addEventListener('click', hideonOverlayClick, false);
+  this.hideGalleryonEvent = function() {
+    var galleryClose = container.querySelector('.gallery-overlay-close');
+    window.addEventListener('keydown', this._onDocumentKeyDown.bind(this));
+    galleryClose.addEventListener('click', this._hideGallery.bind(this));
+    container.addEventListener('click', this._hideonOverlayClick.bind(this));
 
-  if (galleryContainer.classList.contains('invisible')) {
-    galleryClose.removeEventListener('click', hideGallery);
-    galleryContainer.removeEventListener('click', hideonOverlayClick);
-  }
+    if (container.classList.contains('invisible')) {
+      window.removeEventListener('keydown', this._onDocumentKeyDown.bind(this));
+      galleryClose.removeEventListener('click', this._hideGallery.bind(this));
+      container.removeEventListener('click', this._hideonOverlayClick.bind(this));
+    }
+
+  };
 
 };
 
-module.exports = {
-  showGallery: showGallery,
-  getGalleryPictures: getGalleryPictures
-};
+module.exports = Gallery;
+
+
