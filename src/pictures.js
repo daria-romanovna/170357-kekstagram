@@ -6,32 +6,17 @@ var getPictures = require('./pictures/getPictures');
 var getPicturesElement = require('./pictures/getPicturesElement');
 var filterFunction = require('./filter/filterFunction');
 var filterType = require('./filter/filterType');
-<<<<<<< HEAD
 var gallery = require('./gallery');
-=======
->>>>>>> master
+
 var DEFAULT_FILTER = filterType.ALL;
 var PAGE_SIZE = 12;
 var pageNumber;
 
 utilities.hideBlock(variables.filtersBlock);
-<<<<<<< HEAD
 
 var renderPictures = function(picturestoRender, page, replace) {
   if (replace) {
     variables.picturesContainer.innerHTML = '';
-  }
-
-=======
-
-var renderPictures = function(picturestoRender, page, replace) {
-  if (replace) {
-    variables.picturesContainer.innerHTML = '';
-  }
-
->>>>>>> master
-  if (window.innerWidth >= 760) {
-    PAGE_SIZE = 16;
   }
 
   var from = page * PAGE_SIZE;
