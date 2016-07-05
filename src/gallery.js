@@ -14,16 +14,12 @@ var showGallery = function(index) {
   var picturetoShow = galleryPictures[index];
   showPicture(picturetoShow);
 
-  galleryImage.addEventListener('click', function() {
+  var _onPhotoClick = function() {
     picturetoShow = galleryPictures[index++];
     showPicture(picturetoShow);
-  });
+  };
 
-  window.addEventListener('keydown', function(evt) {
-    if (evt.keyCode === 27) {
-      hideGallery();
-    }
-  });
+  galleryImage.addEventListener('click', _onPhotoClick);
 
   hideGalleryonEvent();
 
@@ -35,26 +31,32 @@ var showPicture = function(picturetoShow) {
   galleryContainer.querySelector('.likes-count').textContent = picturetoShow.likes;
 };
 
-
-var hideGallery = function() {
+var _hideGallery = function() {
   galleryContainer.classList.add('invisible');
+};
+
+var _hideonOverlayClick = function(evt) {
+  if (evt.target.classList.contains('gallery-overlay')) {
+    hideGallery();
+  }
+};
+
+var _onDocumentKeyDown = function(evt) {
+  if (evt.keyCode === 27) {
+    hideGallery();
+  }
 };
 
 var hideGalleryonEvent = function() {
 
-  var hideonOverlayClick = function(evt) {
-    if (evt.target.classList.contains('gallery-overlay')) {
-      hideGallery();
-    }
-  };
-
-  galleryClose.addEventListener('click', hideGallery);
-
-  galleryContainer.addEventListener('click', hideonOverlayClick, false);
+  window.addEventListener('keydown', _onDocumentKeyDown);
+  galleryClose.addEventListener('click', _hideGallery);
+  galleryContainer.addEventListener('click', _hideonOverlayClick);
 
   if (galleryContainer.classList.contains('invisible')) {
-    galleryClose.removeEventListener('click', hideGallery);
-    galleryContainer.removeEventListener('click', hideonOverlayClick);
+    window.removeEventListener('keydown', _onDocumentKeyDown);
+    galleryClose.removeEventListener('click', _hideGallery);
+    galleryContainer.removeEventListener('click', _hideonOverlayClick);
   }
 
 };
