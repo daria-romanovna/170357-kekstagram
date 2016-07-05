@@ -36,6 +36,8 @@ var getPicturesElement = function(data, container) {
     element.classList.add('picture-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
 
+  return element;
+
 };
 
 module.exports = getPicturesElement;

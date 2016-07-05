@@ -35,7 +35,6 @@ var showPicture = function(picturetoShow) {
   galleryContainer.querySelector('.likes-count').textContent = picturetoShow.likes;
 };
 
-
 var hideGallery = function() {
   galleryContainer.classList.add('invisible');
 };
