@@ -14,11 +14,12 @@ var Photo = function(data, container) {
     container.addEventListener('click', function(evt) {
       if (evt.target.classList.contains('picture-image')) {
         var index = Array.prototype.indexOf.call(container.children, evt.target.parentNode);
-        var gallery = new Gallery(variables.renderedPictures, galleryContainer);
-        gallery.showGallery(index);
+        var photoURL = '#photo/photos/' + (index + 1) + '.jpg';
+        console.log(photoURL);
+        window.location.hash = location.hash.photoURL;
       }
     });
-  };
+  }.bind(this);
 
   this.remove = function() {
     this.element.removeEventListener('click', this.onPhotoClick);
