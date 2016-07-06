@@ -4,9 +4,8 @@ var variables = require('./variables');
 var utilities = require('./utilities');
 var getPictures = require('./pictures/getPictures');
 var filterFunction = require('./filter/filterFunction');
-var filterType = require('./filter/filterType');
 var Photo = require('./pictures/photo');
-var DEFAULT_FILTER = filterType.ALL;
+var previousFilter = localStorage.getItem('filter');
 var PAGE_SIZE = 12;
 var pageNumber;
 
@@ -37,6 +36,7 @@ var clearPage = function(reset) {
 
 var setFilterEnabled = function(filter) {
   variables.filteredPictures = filterFunction(filter);
+  localStorage.setItem('filter', filter);
   pageNumber = 0;
   renderPictures(variables.filteredPictures, pageNumber);
 
@@ -48,6 +48,8 @@ var setFilterEnabled = function(filter) {
 };
 
 var setFiltrationEnabled = function() {
+  variables.filtersBlock.querySelector('#' + previousFilter).checked = true;
+
   variables.filtersBlock.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('filters-radio')) {
       variables.picturesContainer.classList.remove('pictures-null');
@@ -77,7 +79,7 @@ var setScrollEnabled = function() {
 getPictures(function(loadedPictures) {
   variables.pictures = loadedPictures;
   utilities.showBlock(variables.filtersBlock);
-  setFilterEnabled(DEFAULT_FILTER);
+  setFilterEnabled(previousFilter);
   setFiltrationEnabled();
   setScrollEnabled();
 });
