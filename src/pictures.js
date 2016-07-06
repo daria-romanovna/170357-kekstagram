@@ -73,10 +73,10 @@ getPictures(function(loadedPictures) {
   setFilterEnabled(DEFAULT_FILTER);
   setFiltrationEnabled();
   setScrollEnabled();
-  showGalletyonClick();
+  showGalleryonClick();
 });
 
-var showGalletyonClick = function() {
+var showGalleryonClick = function() {
   variables.picturesContainer.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('picture-image')) {
       var index = Array.prototype.indexOf.call(variables.picturesContainer.children, evt.target.parentNode);

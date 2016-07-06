@@ -15,7 +15,7 @@ var showGallery = function(index) {
   showPicture(picturetoShow);
 
   var _onPhotoClick = function() {
-    picturetoShow = galleryPictures[index++];
+    picturetoShow = galleryPictures[++index];
     showPicture(picturetoShow);
   };
 
@@ -37,13 +37,13 @@ var _hideGallery = function() {
 
 var _hideonOverlayClick = function(evt) {
   if (evt.target.classList.contains('gallery-overlay')) {
-    hideGallery();
+    _hideGallery();
   }
 };
 
 var _onDocumentKeyDown = function(evt) {
   if (evt.keyCode === 27) {
-    hideGallery();
+    _hideGallery();
   }
 };
 

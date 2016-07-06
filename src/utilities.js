@@ -9,7 +9,7 @@ var isBottomReached = function(container) {
 var isPageBottomReached = function(container) {
   var GAP = 50;
   var currentPosition = container.getBoundingClientRect();
-  return window.innerHeight - currentPosition.bottom <= GAP;
+  return window.innerHeight - currentPosition.bottom  >= GAP;
 };
 
 var isNextPageAvailable = function(picturestoRender, page, pageSize) {
