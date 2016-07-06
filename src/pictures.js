@@ -6,6 +6,8 @@ var getPictures = require('./pictures/getPictures');
 var getPicturesElement = require('./pictures/getPicturesElement');
 var filterFunction = require('./filter/filterFunction');
 var filterType = require('./filter/filterType');
+var gallery = require('./gallery');
+
 var DEFAULT_FILTER = filterType.ALL;
 var PAGE_SIZE = 12;
 var pageNumber;
@@ -15,10 +17,6 @@ utilities.hideBlock(variables.filtersBlock);
 var renderPictures = function(picturestoRender, page, replace) {
   if (replace) {
     variables.picturesContainer.innerHTML = '';
-  }
-
-  if (window.innerWidth >= 760) {
-    PAGE_SIZE = 16;
   }
 
   var from = page * PAGE_SIZE;
@@ -31,6 +29,7 @@ var renderPictures = function(picturestoRender, page, replace) {
 
 var setFilterEnabled = function(filter) {
   variables.filteredPictures = filterFunction(filter);
+  gallery.getGalleryPictures(variables.filteredPictures);
   pageNumber = 0;
   renderPictures(variables.filteredPictures, pageNumber, true);
 
@@ -74,4 +73,15 @@ getPictures(function(loadedPictures) {
   setFilterEnabled(DEFAULT_FILTER);
   setFiltrationEnabled();
   setScrollEnabled();
+  showGalleryonClick();
 });
+
+var showGalleryonClick = function() {
+  variables.picturesContainer.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('picture-image')) {
+      var index = Array.prototype.indexOf.call(variables.picturesContainer.children, evt.target.parentNode);
+      gallery.showGallery(index);
+    }
+  });
+};
+
