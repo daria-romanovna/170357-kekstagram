@@ -4,7 +4,7 @@ var filtersBlock = document.querySelector('.filters');
 var picturesContainer = document.querySelector('.pictures');
 var pictures = [];
 var filteredPictures = [];
-var renderedPictures =[];
+var renderedPictures = [];
 
 module.exports = {
   filtersBlock: filtersBlock,

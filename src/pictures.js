@@ -3,7 +3,6 @@
 var variables = require('./variables');
 var utilities = require('./utilities');
 var getPictures = require('./pictures/getPictures');
-var getPicturesElement = require('./pictures/getPicturesElement');
 var filterFunction = require('./filter/filterFunction');
 var filterType = require('./filter/filterType');
 var gallery = require('./gallery');
@@ -36,8 +35,7 @@ var clearPage = function(reset) {
 
     variables.renderedPictures = [];
   }
-
-}
+};
 
 var setFilterEnabled = function(filter) {
   variables.filteredPictures = filterFunction(filter);
