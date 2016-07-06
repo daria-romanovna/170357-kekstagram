@@ -9,7 +9,7 @@ var isBottomReached = function(container) {
 var isPageBottomReached = function(container) {
   var GAP = 50;
   var currentPosition = container.getBoundingClientRect();
-  return window.innerHeight - currentPosition.bottom <= GAP;
+  return window.innerHeight - currentPosition.bottom >= GAP;
 };
 
 var isNextPageAvailable = function(picturestoRender, page, pageSize) {
@@ -20,14 +20,12 @@ var hideBlock = function(block) {
   if (!block.classList.contains('hidden')) {
     block.classList.add('hidden');
   }
-
 };
 
 var showBlock = function(block) {
   if (block.classList.contains('hidden')) {
     block.classList.remove('hidden');
   }
-
 };
 
 module.exports = {

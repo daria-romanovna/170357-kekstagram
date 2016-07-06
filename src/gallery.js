@@ -56,5 +56,3 @@ var Gallery = function(data, container) {
 };
 
 module.exports = Gallery;
-
-
