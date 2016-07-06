@@ -9,7 +9,7 @@ var Gallery = function(data, container) {
     this.showPicture(picturetoShow);
 
     var _onPhotoClick = function() {
-      picturetoShow = this.data[index++].data;
+      picturetoShow = this.data[++index].data;
       this.showPicture(picturetoShow);
     }.bind(this);
 

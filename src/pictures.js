@@ -84,4 +84,3 @@ getPictures(function(loadedPictures) {
   setScrollEnabled();
 });
 
-
