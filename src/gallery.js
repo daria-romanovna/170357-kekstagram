@@ -3,6 +3,7 @@ var variables = require('./variables');
 
 var Gallery = function(data, container) {
   this.data = data;
+  this.container = container;
   this.showGallery = function(index) {
     container.classList.remove('invisible');
     var galleryImage = container.querySelector('.gallery-overlay-image');
@@ -41,37 +42,40 @@ var Gallery = function(data, container) {
     container.querySelector('.likes-count').textContent = picturetoShow.likes;
   };
 
-  this._hideGallery = function() {
-    container.classList.add('invisible');
-    window.location.hash = '';
-  };
-
-  this._hideonOverlayClick = function(evt) {
-    if (evt.target.classList.contains('gallery-overlay')) {
-      this._hideGallery();
-    }
-  };
-
-  this._onDocumentKeyDown = function(evt) {
-    if (evt.keyCode === 27) {
-      this._hideGallery();
-    }
-  };
-
-  this.hideGalleryonEvent = function() {
-    var galleryClose = container.querySelector('.gallery-overlay-close');
-    window.addEventListener('keydown', this._onDocumentKeyDown.bind(this));
-    galleryClose.addEventListener('click', this._hideGallery.bind(this));
-    container.addEventListener('click', this._hideonOverlayClick.bind(this));
-
-    if (container.classList.contains('invisible')) {
-      window.removeEventListener('keydown', this._onDocumentKeyDown.bind(this));
-      galleryClose.removeEventListener('click', this._hideGallery.bind(this));
-      container.removeEventListener('click', this._hideonOverlayClick.bind(this));
-    }
-
-  };
-
 };
 
 module.exports = Gallery;
+
+Gallery.prototype._hideGallery = function() {
+  this.container.classList.add('invisible');
+  window.location.hash = '';
+};
+
+Gallery.prototype._hideonOverlayClick = function(evt) {
+  if (evt.target.classList.contains('gallery-overlay')) {
+    this._hideGallery();
+  }
+};
+
+Gallery.prototype._onDocumentKeyDown = function(evt) {
+  if (evt.keyCode === 27) {
+    this._hideGallery();
+  }
+};
+
+Gallery.prototype.hideGalleryonEvent = function() {
+  var galleryClose = this.container.querySelector('.gallery-overlay-close');
+  window.addEventListener('keydown', this._onDocumentKeyDown.bind(this));
+  galleryClose.addEventListener('click', this._hideGallery.bind(this));
+  this.container.addEventListener('click', this._hideonOverlayClick.bind(this));
+
+  if (this.container.classList.contains('invisible')) {
+    window.removeEventListener('keydown', this._onDocumentKeyDown.bind(this));
+    galleryClose.removeEventListener('click', this._hideGallery.bind(this));
+    this.container.removeEventListener('click', this._hideonOverlayClick.bind(this));
+  }
+};
+
+
+
+
