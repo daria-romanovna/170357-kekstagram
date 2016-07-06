@@ -5,6 +5,26 @@ var Gallery = require('../gallery');
 var galleryContainer = document.querySelector('.gallery-overlay');
 var variables = require('../variables');
 
+document.addEventListener('load', function() {
+  var matches = window.location.hash.match(/#photos\/(\S+)/);
+  if (matches) {
+    var gallery = new Gallery(variables.renderedPictures, galleryContainer);
+    gallery.showGallery(matches[1]);
+  } else {
+    gallery.hideGallery();
+  }
+});
+
+window.addEventListener('hashchange', function() {
+  var matches = window.location.hash.match(/#photos\/(\S+)/);
+  if (matches) {
+    var gallery = new Gallery(variables.renderedPictures, galleryContainer);
+    gallery.showGallery(matches[1]);
+  } else {
+    gallery.hideGallery();
+  }
+});
+
 var Photo = function(data, container) {
   this.data = data;
 
@@ -13,13 +33,11 @@ var Photo = function(data, container) {
   this.onPhotoClick = function() {
     container.addEventListener('click', function(evt) {
       if (evt.target.classList.contains('picture-image')) {
-        var index = Array.prototype.indexOf.call(container.children, evt.target.parentNode);
-        var photoURL = '#photo/photos/' + (index + 1) + '.jpg';
-        console.log(photoURL);
-        window.location.hash = location.hash.photoURL;
+        var matches = evt.target.src.match(/photos\/(\S+)/);
+        window.location.hash = matches[0];
       }
     });
-  }.bind(this);
+  };
 
   this.remove = function() {
     this.element.removeEventListener('click', this.onPhotoClick);

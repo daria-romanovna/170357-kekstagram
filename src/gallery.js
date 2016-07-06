@@ -1,19 +1,37 @@
 'use strict';
+var variables = require('./variables');
 
 var Gallery = function(data, container) {
   this.data = data;
   this.showGallery = function(index) {
-    var galleryImage = container.querySelector('.gallery-overlay-image');
     container.classList.remove('invisible');
-    var picturetoShow = this.data[index].data;
-    this.showPicture(picturetoShow);
+    var galleryImage = container.querySelector('.gallery-overlay-image');
 
-    var _onPhotoClick = function() {
-      picturetoShow = this.data[index++].data;
+    if (typeof index === 'string') {
+      var picture = variables.picturesContainer.querySelector('img[src*="photos/' + index + '"]').parentNode;
+      var indexofPhoto = Array.prototype.indexOf.call(variables.picturesContainer.children, picture);
+      var picturetoShow = this.data[indexofPhoto].data;
       this.showPicture(picturetoShow);
-    }.bind(this);
 
-    galleryImage.addEventListener('click', _onPhotoClick);
+      var _hashChangeonPhotoClick = function() {
+        picturetoShow = this.data[++indexofPhoto].data;
+        window.location.hash = picturetoShow.url;
+      };
+
+      galleryImage.addEventListener('click', _hashChangeonPhotoClick.bind(this));
+
+    } else {
+      picturetoShow = this.data[index].data;
+      this.showPicture(picturetoShow);
+
+      var _onPhotoClick = function() {
+        picturetoShow = this.data[++index].data;
+        this.showPicture(picturetoShow);
+      }.bind(this);
+
+      galleryImage.addEventListener('click', _onPhotoClick);
+    }
+
     this.hideGalleryonEvent();
   };
 
@@ -25,6 +43,7 @@ var Gallery = function(data, container) {
 
   this._hideGallery = function() {
     container.classList.add('invisible');
+    window.location.hash = '';
   };
 
   this._hideonOverlayClick = function(evt) {

@@ -83,5 +83,3 @@ getPictures(function(loadedPictures) {
   setFiltrationEnabled();
   setScrollEnabled();
 });
-
-
