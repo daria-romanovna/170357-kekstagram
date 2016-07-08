@@ -50,6 +50,7 @@ var Gallery = function(data, container) {
       window.removeEventListener('keydown', this._onDocumentKeyDown);
       galleryClose.removeEventListener('click', this._hideGallery);
       container.removeEventListener('click', this._hideonOverlayClick);
+      galleryImage.removeEventListener('click', this._onPhotoClick);
     }
 
   };

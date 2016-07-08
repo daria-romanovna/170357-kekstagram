@@ -18,26 +18,33 @@ var getPicturesElement = function(data, container) {
   container.appendChild(element);
 
   var pictureImage = new Image();
-  pictureImage.onload = function(evt) {
+
+  var _pictureOnLoad = function(evt) {
     clearTimeout(pictureLoadTimeout);
-    element.querySelector('.picture-image').src = evt.target.src;
-    element.querySelector('.picture-image').width = '182';
-    element.querySelector('.picture-image').height = '182';
+    var elementPicture = element.querySelector('.picture-image');
+    elementPicture.src = evt.target.src;
+    elementPicture.width = '182';
+    elementPicture.height = '182';
+    pictureImage.removeEventListener('error', _pictureOnError);
   };
 
-  pictureImage.onerror = function() {
+  var _pictureOnError = function() {
     element.classList.add('picture-load-failure');
+    pictureImage.removeEventListener('load', _pictureOnLoad);
   };
+
+  pictureImage.addEventListener('load', _pictureOnLoad);
+  pictureImage.addEventListener('error', _pictureOnError);
 
   pictureImage.src = data.url;
 
   var pictureLoadTimeout = setTimeout(function() {
     pictureImage.src = '';
     element.classList.add('picture-load-failure');
+    pictureImage.removeEventListener('load', _pictureOnLoad);
   }, IMAGE_LOAD_TIMEOUT);
 
   return element;
-
 };
 
 module.exports = getPicturesElement;
