@@ -27,21 +27,23 @@ window.addEventListener('hashchange', function() {
 
 var Photo = function(data, container) {
   this.data = data;
-
   this.element = getPicturesElement(this.data, container);
 
   this.onPhotoClick = function() {
-    container.addEventListener('click', function(evt) {
-      if (evt.target.classList.contains('picture-image')) {
-        var matches = evt.target.src.match(/photos\/(\S+)/);
-        window.location.hash = matches[0];
-      }
-    });
+    container.addEventListener('click', this._showOnPhotoClick);
+  };
+
+  this._showOnPhotoClick = function(evt) {
+    if (evt.target.classList.contains('picture-image')) {
+      var matches = evt.target.src.match(/photos\/(\S+)/);
+      window.location.hash = matches[0];
+    }
   };
 
   this.remove = function() {
     this.element.removeEventListener('click', this.onPhotoClick);
     this.element.parentNode.removeChild(this.element);
+    container.removeEventListener('click', this._showOnPhotoClick);
   };
 
   this.element.addEventListener('click', this.onPhotoClick.bind(this));
@@ -50,4 +52,3 @@ var Photo = function(data, container) {
 };
 
 module.exports = Photo;
-
