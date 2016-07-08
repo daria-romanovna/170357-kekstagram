@@ -11,7 +11,7 @@ var DEFAULT_FILTER = filterType.ALL;
 var PAGE_SIZE = 12;
 var pageNumber;
 
-if (previousFilter === 'null') {
+if (!previousFilter) {
   previousFilter = DEFAULT_FILTER;
 }
 
