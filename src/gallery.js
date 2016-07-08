@@ -10,8 +10,14 @@ var Gallery = function(data, container) {
     this.showPicture(picturetoShow);
 
     var _onPhotoClick = function() {
-      picturetoShow = this.data[++index].data;
-      this.showPicture(picturetoShow);
+      console.log(index);
+      console.log(this.data.length);
+
+      if (index <= this.data.length) {
+        picturetoShow = this.data[++index].data;
+        this.showPicture(picturetoShow);
+      }
+
     }.bind(this);
 
     galleryImage.addEventListener('click', _onPhotoClick);
