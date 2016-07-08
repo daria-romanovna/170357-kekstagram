@@ -4,10 +4,16 @@ var variables = require('./variables');
 var utilities = require('./utilities');
 var getPictures = require('./pictures/getPictures');
 var filterFunction = require('./filter/filterFunction');
+var filterType = require('./filter/filterType');
 var Photo = require('./pictures/photo');
 var previousFilter = localStorage.getItem('filter');
+var DEFAULT_FILTER = filterType.ALL;
 var PAGE_SIZE = 12;
 var pageNumber;
+
+if (previousFilter === 'null') {
+  previousFilter = DEFAULT_FILTER;
+}
 
 utilities.hideBlock(variables.filtersBlock);
 
